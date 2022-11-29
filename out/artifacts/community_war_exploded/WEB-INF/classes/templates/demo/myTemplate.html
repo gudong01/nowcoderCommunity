@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head >
+    <meta charset="UTF-8">
+    <title>myTemplate</title>
+</head>
+<body>
+
+<form  th:action="@{/testInsert}">
+    <p>
+        姓名：<input type="text" id="name" name="myname">
+        年龄：<input type="text" id="age" name="myage">
+        <button type="submit">提交</button>
+    </p>
+</form>
+
+</body>
+</html>
