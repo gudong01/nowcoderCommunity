@@ -64,7 +64,6 @@ public class discussPostController implements CommunityConstant {
         User user = userService.findUserById(post.getuserId());
         model.addAttribute("user",user);
         long postLikeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST,post.getId());
-        System.out.println(postLikeCount);
         model.addAttribute("likeCount",postLikeCount);
         int postLikeStatus = likeService.findEntityLikeStatus(hostUser.getId(),ENTITY_TYPE_POST,post.getId());
         model.addAttribute("likeStatus",postLikeStatus);

@@ -12,7 +12,7 @@ public class User {
    private int status;
    private String activationCode;
    private String headerUrl;
-   private Date createDate;
+   private Date createTime;
 
     public int getId() {
         return id;
@@ -86,12 +86,12 @@ public class User {
         this.headerUrl = headerUrl;
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateDate(Date createTime) {
+        this.createTime = createTime;
     }
 
     @Override
@@ -106,7 +106,7 @@ public class User {
                 ", status=" + status +
                 ", activationCode='" + activationCode + '\'' +
                 ", headerUrl='" + headerUrl + '\'' +
-                ", createDate=" + createDate +
+                ", createTime=" + createTime +
                 '}';
     }
 }

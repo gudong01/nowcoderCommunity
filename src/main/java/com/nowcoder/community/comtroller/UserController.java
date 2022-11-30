@@ -2,9 +2,11 @@ package com.nowcoder.community.comtroller;
 
 import com.nowcoder.community.annotation.LoginRequired;
 import com.nowcoder.community.entity.User;
+import com.nowcoder.community.service.LikeService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
+import com.nowcoder.community.util.RedisKeyUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -42,6 +44,9 @@ public class UserController {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private LikeService likeService;
 
     @LoginRequired
     @RequestMapping(path = "/setting",method = RequestMethod.GET)
@@ -110,19 +115,26 @@ public class UserController {
         oldPwd = CommunityUtil.md5(oldPwd + user.getSalt()) ;
         if(!user.getPassword().equals(oldPwd)){
             model.addAttribute("oldPwdMsg","旧密码错误!");
-            System.out.println("旧密码错误!");
             return "/site/setting";
         }
         if(!password0.equals(password1)){
             model.addAttribute("passwordMsg","两次输入的密码不一致");
-            System.out.println("两次输入的密码不一致");
-            System.out.println(password0);
-            System.out.println(password1);
-            System.out.println(password0.equals(password1));
             return "/site/setting";
         }
         userService.updatePassword(user.getId(),password0);
-        System.out.println("success");
         return "redirect:/logout";
+    }
+
+    @RequestMapping(path = "/profile/{userId}",method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId")int userId,Model model) {
+        System.out.println("进入get profile");
+        User user = userService.findUserById(userId);
+        if(user == null){
+            throw new RuntimeException("用户不存在,无法访问主页");
+        }
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount",likeCount);
+        model.addAttribute("user",user);
+        return "site/profile";
     }
 }

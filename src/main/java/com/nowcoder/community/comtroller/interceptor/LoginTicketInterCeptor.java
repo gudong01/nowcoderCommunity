@@ -32,7 +32,6 @@ public class LoginTicketInterCeptor implements HandlerInterceptor {
             if(loginTicket != null && loginTicket.getStatus() == 0 && loginTicket.getExpired().after(new Date())){
                 //查询用户
                 User user = userService.findUserById(loginTicket.getUserId());
-                System.out.println("我还是拿到user了");
                 //在本次请求中持有用户 （区分线程的）
                 hostHolder.setUsers(user);
             }
