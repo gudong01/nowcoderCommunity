@@ -22,11 +22,11 @@ public class DiscussPost {
         this.id = id;
     }
 
-    public int getuserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setuserId(int userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 

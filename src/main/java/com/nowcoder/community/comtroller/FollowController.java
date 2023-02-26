@@ -1,6 +1,8 @@
 package com.nowcoder.community.comtroller;
 
+import com.nowcoder.community.Event.EventProducer;
 import com.nowcoder.community.annotation.LoginRequired;
+import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.FollowService;
@@ -9,6 +11,7 @@ import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class FollowController {
+public class FollowController implements CommunityConstant{
     @Autowired
     UserService userService;
     @Autowired
@@ -30,12 +33,27 @@ public class FollowController {
     @Autowired
     private HostHolder hostHolder;
 
+    @Autowired
+    private EventProducer eventProducer;
+
+
     @RequestMapping(path = "/follow",method = RequestMethod.POST)
     @ResponseBody
     @LoginRequired
     public String follow(int entityType,int entityId){
         User user = hostHolder.getUsers();
         followService.follow(entityType,entityId,user.getId());
+
+        //触发事件
+        Event event = new Event()
+                .setTopic(EVENT_FOLLOW)
+                .setEntityType(ENTITY_TYPE_USER)
+                .setEntityId(entityId)
+                .setEntityUserId(entityId)
+                .setUserId(user.getId());
+
+        eventProducer.fireEvent(event);
+
         return CommunityUtil.getJSONString(0,"关注成功！");
     }
 

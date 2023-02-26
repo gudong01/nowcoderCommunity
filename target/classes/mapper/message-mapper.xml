@@ -34,7 +34,7 @@
         select max(id) as maxid from message
         where status != 2
         and from_id != 1
-        and (from_id = 111 or to_id = 111)
+        and (from_id = #{userId} or to_id = #{userId})
         group by conversation_id
         )as m;
     </select>
@@ -67,6 +67,7 @@
             and conversation_id = #{conversationId}
         </if>
     </select>
+
     <update id="updateStatus">
         update message
         set status  = #{status}

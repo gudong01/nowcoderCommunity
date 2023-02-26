@@ -30,8 +30,16 @@
         and entity_type = #{entityType}
         and entity_id = #{entityId}
     </select>
-    <insert id="insertComment" parameterType="Comment">
-        insert into comment(<include refid="insertFields"></include>)
+
+    <!--用来查回复对应的评论-->
+    <select id="selectCommentByEntityId" resultType="Comment">
+        select <include refid="selectFields"> </include>
+        from comment
+        where entity_id = #{entityId}
+    </select>
+
+    <insert id="insertComment" parameterType="Comment" keyProperty="id" keyColumn="id" useGeneratedKeys="true">
+        insert into comment(<include refid="insertFields"> </include>)
         values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
     </insert>
 </mapper>

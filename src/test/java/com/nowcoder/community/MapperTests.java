@@ -1,13 +1,14 @@
 package com.nowcoder.community;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.nowcoder.community.dao.DiscussPostMapper;
 import com.nowcoder.community.dao.LoginTicketMapper;
 import com.nowcoder.community.dao.MessageMapper;
 import com.nowcoder.community.dao.UserMapper;
-import com.nowcoder.community.entity.DiscussPost;
-import com.nowcoder.community.entity.LoginTicket;
-import com.nowcoder.community.entity.Message;
-import com.nowcoder.community.entity.User;
+import com.nowcoder.community.entity.*;
+import com.nowcoder.community.service.CommentService;
+import com.nowcoder.community.service.MessageService;
+import com.nowcoder.community.service.NoticeService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.nowcoder.community.util.CommunityConstant.SYSTEM_ID;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -34,6 +39,15 @@ public class MapperTests {
     private LoginTicketMapper loginTicketMapper;
     @Autowired
     private MessageMapper messageMapper;
+
+    @Autowired
+    private MessageService messageService;
+
+    @Autowired
+    private NoticeService noticeService;
+
+    @Autowired
+    private CommentService commentService;
     @Test
     public void testSelect(){
         User user0  = mapper.selectById(101);
@@ -103,5 +117,36 @@ public class MapperTests {
 
         int count = messageMapper.selectLetterUnreadCount(131,"111_131");
         System.out.println(count);
+    }
+
+    @Test
+    public void TestInsert(){
+        Message message = new Message();
+        message.setFromId(SYSTEM_ID);
+        message.setToId(111);
+        message.setConversationId("follow");
+        message.setCreateTime(new Date());
+        message.setStatus(0);
+
+        Map<String, Object> content = new HashMap<>();
+        content.put("userId", 111);
+        content.put("entityType", 3);
+        content.put("entityId", 111);
+        message.setContent(JSONObject.toJSONString(content));
+        System.out.println(message);
+        messageService.addMessage(message);
+        System.out.println(message);
+    }
+
+    @Test
+    public void NoticeTest(){
+        Message commentNotice = noticeService.findFirstNoticeByTopic(111,"comment");
+        System.out.println(commentNotice);
+    }
+
+    @Test
+    public void CommentTest(){
+        Comment comment = commentService.findCommentByEntityId(28);
+        System.out.println(comment.getId());
     }
 }

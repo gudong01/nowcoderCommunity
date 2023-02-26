@@ -169,9 +169,9 @@
 											<form method="post" th:action="@{|/comment/add/${post.id}|}">
 												<div>
 													<input type="text" class="input-size" name="content" th:placeholder="|回复 ${replyVo.user.userName}|"/>
-													<input type="hidden" name="entityType"  value="2">
-													<input type="hidden" name="entityId"  th:value="${commentVo.comment.id}"}>
-													<input type="hidden" name="targetId" th:value="${replyVo.user.id}">
+													<input type="hidden" name="entityType"  value="2"/>
+													<input type="hidden" name="entityId"  th:value="${replyVo.reply.id}"/>
+													<input type="hidden" name="targetId" th:value="${replyVo.user.id}"/>
 												</div>
 												<div class="text-right mt-2">
 													<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
@@ -186,8 +186,9 @@
 									<form  method="post" th:action="@{|/comment/add/${post.id}|}">
 										<div>
 											<input type="text" class="input-size" name="content" placeholder="请输入你的观点"/>
-											<input type="hidden" name="entityType"  value="2">
-											<input type="hidden" name="entityId"  th:value="${commentVo.comment.id}"}>
+											<input type="hidden" name="entityType"  value="2"/>
+											<input type="hidden" name="entityId"  th:value="${commentVo.comment.id}"/>
+											<input type="hidden" name="targetId" th:value="${commentVo.user.id}"/>
 										</div>
 										<div class="text-right mt-2">
 											<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;复&nbsp;&nbsp;</button>
@@ -218,14 +219,15 @@
 			<div class="container mt-3">
 				<form class="replyform" method="post" th:action="@{|/comment/add/${post.id}|}">
 					<p class="mt-3">
-						<a name="replyform"></a>
+<!--						<a name="replyform"> </a>-->
 						<textarea placeholder="在这里畅所欲言你的看法吧!" name="content"> </textarea>
 						<!--隐藏传递的函数-->
-						<input type="hidden" name="entityType"  value="1">
-						<input type="hidden" name="entityId"  th:value="${post.id}"}>
+						<input type="hidden" name="entityType"  value="1"/>
+						<input type="hidden" name="entityId"  th:value="${post.id}"/>
+						<input type="hidden" name="targetId" th:value="${post.userId}"/>
 					</p>
 					<p class="text-right">
-						<button type="submit" class="btn btn-primary btn-sm">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</button>
+						<button type="submit" class="btn btn-primary btn-sm" onclick="#">&nbsp;&nbsp;回&nbsp;&nbsp;帖&nbsp;&nbsp;</button>
 					</p>
 				</form>
 			</div>

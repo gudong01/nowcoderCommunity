@@ -2,10 +2,9 @@ package com.nowcoder.community.comtroller;
 import com.nowcoder.community.entity.DiscussPost;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
-import com.nowcoder.community.service.DiscussPostService;
-import com.nowcoder.community.service.LikeService;
-import com.nowcoder.community.service.UserService;
+import com.nowcoder.community.service.*;
 import com.nowcoder.community.util.CommunityConstant;
+import com.nowcoder.community.util.HostHolder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
@@ -27,9 +26,12 @@ public class HomeController implements CommunityConstant {
     private UserService userService;
     @Autowired
     private LikeService likeService;
+    @Autowired
+    private HostHolder hostHolder;
 
     @RequestMapping(path = "/index",method = RequestMethod.GET)
     public String getIndexPage(Model model, Page page){
+        User hostHolderUser= hostHolder.getUsers();
         page.setRows(discussPostService.findDiscussPostRows(0));
         page.setPath("/index");
         List<DiscussPost> list = discussPostService.findDiscussPosts(0,page.getOffset(),page.getLimit());
@@ -39,7 +41,7 @@ public class HomeController implements CommunityConstant {
             for (DiscussPost post : list){
                 Map<String,Object> map = new HashMap<>();
                 map.put("post",post);
-                User user = userService.findUserById(post.getuserId());
+                User user = userService.findUserById(post.getUserId());
                 map.put("user",user);
                 long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST,post.getId());
                 map.put("likeCount",likeCount);

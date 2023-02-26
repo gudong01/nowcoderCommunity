@@ -10,7 +10,7 @@ import java.util.List;
 @Service
 public class MessageService {
     @Autowired
-    MessageMapper messageMapper;
+    private MessageMapper messageMapper;
 
     public List<Message> findConversations(int userId,int offset,int limit){
         return messageMapper.selectConversations(userId,offset,limit);
