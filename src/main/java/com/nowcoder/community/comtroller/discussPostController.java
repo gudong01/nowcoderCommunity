@@ -45,7 +45,7 @@ public class discussPostController implements CommunityConstant {
             return CommunityUtil.getJSONString(403,"你还没有登录");
         }
         DiscussPost post = new DiscussPost();
-        post.setuserId(user.getId());
+        post.setUserId(user.getId());
         post.setTitle(title);
         post.setCreateTime(new Date());
         post.setContent(content);
@@ -61,7 +61,7 @@ public class discussPostController implements CommunityConstant {
         //获取帖子 和 作者
         DiscussPost post = discussPostService.findDiscussPostById(discussPostId);
         model.addAttribute("post",post);
-        User user = userService.findUserById(post.getuserId());
+        User user = userService.findUserById(post.getUserId());
         model.addAttribute("user",user);
         long postLikeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST,post.getId());
         model.addAttribute("likeCount",postLikeCount);

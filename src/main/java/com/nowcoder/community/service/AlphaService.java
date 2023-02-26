@@ -70,7 +70,7 @@ public class AlphaService {
 
         //新增帖子
         DiscussPost post = new DiscussPost();
-        post.setuserId(user.getId());
+        post.setUserId(user.getId());
         post.setTitle("hello");
         post.setContent("新人报道");
         post.setCreateTime(new Date());
@@ -97,7 +97,7 @@ public class AlphaService {
 
                 //新增帖子
                 DiscussPost post = new DiscussPost();
-                post.setuserId(user.getId());
+                post.setUserId(user.getId());
                 post.setTitle("hello beta");
                 post.setContent("新人报道1");
                 post.setCreateTime(new Date());

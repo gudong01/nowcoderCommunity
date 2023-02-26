@@ -1,6 +1,8 @@
 package com.nowcoder.community.service;
 
+import com.nowcoder.community.Event.EventProducer;
 import com.nowcoder.community.annotation.LoginRequired;
+import com.nowcoder.community.entity.Event;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.util.CommunityConstant;
 import com.nowcoder.community.util.CommunityUtil;
@@ -12,6 +14,7 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +32,9 @@ public class FollowService implements CommunityConstant {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    EventProducer eventProducer;
 
     public void follow(int entityType,int entityId,int userId){
         String followerKey = RedisKeyUtil.getFollowerKey(entityType,entityId);

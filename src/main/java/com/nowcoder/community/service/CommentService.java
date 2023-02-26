@@ -29,6 +29,9 @@ public class CommentService implements CommunityConstant{
     public int findCommentCount(int entityType,int entityId){
         return commentMapper.selectCountByEntity(entityType,entityId);
     }
+    public Comment findCommentByEntityId(int entityId){
+        return commentMapper.selectCommentByEntityId(entityId);
+    }
 
 
     //事务管理  隔离级别 传播机制

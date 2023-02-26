@@ -5,6 +5,7 @@ import com.nowcoder.community.entity.Message;
 import com.nowcoder.community.entity.Page;
 import com.nowcoder.community.entity.User;
 import com.nowcoder.community.service.MessageService;
+import com.nowcoder.community.service.NoticeService;
 import com.nowcoder.community.service.UserService;
 import com.nowcoder.community.util.CommunityUtil;
 import com.nowcoder.community.util.HostHolder;
@@ -20,13 +21,15 @@ import java.util.*;
 @Controller
 public class MessageController {
     @Autowired
-    MessageService messageService;
+    private MessageService messageService;
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    HostHolder hostHolder;
+    private NoticeService noticeService;
     @Autowired
-    SensitiveFilter filter;
+    private HostHolder hostHolder;
+    @Autowired
+    private SensitiveFilter filter;
     //私信列表
     @RequestMapping(path = "/letter/list",method = RequestMethod.GET)
     //会话列表
@@ -56,6 +59,7 @@ public class MessageController {
                 map.put("targetUser",userService.findUserById(targerId));
                 conversations.add(map);
             }
+            model.addAttribute("noticeUnreadCount",noticeService.findUnreadNoticeCount(user.getId()));
             model.addAttribute("conversations",conversations);
             model.addAttribute("letterUnreadSum",messageService.findLetterUnreadCount(user.getId(),null));
         }
@@ -126,4 +130,5 @@ public class MessageController {
         messageService.addMessage(message);
         return CommunityUtil.getJSONString(0);
     }
+
 }
